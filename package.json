@@ -1,0 +1,29 @@
+{
+  "name": "auditoriaeseguranca",
+  "version": "1.0.0",
+  "description": "código para produção de RSA",
+  "main": "index.js",
+  "dependencies": {
+    "big-integer": "^1.6.25",
+    "body-parser": "^1.6.7",
+    "compute-gcd": "^1.2.0",
+    "ejs": "^0.8.8",
+    "express": "^4.8.8",
+    "express-load": "^1.1.14",
+    "method-override": "^2.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pehls/auditoriaeseguranca.git"
+  },
+  "author": "Gabriel pehls",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pehls/auditoriaeseguranca/issues"
+  },
+  "homepage": "https://github.com/pehls/auditoriaeseguranca#readme"
+}

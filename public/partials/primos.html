@@ -1,0 +1,48 @@
+<div class="jumbotron">
+  <h1 class="text-center">
+  Sistema de cálculo de cifragem/decifragemm em RSA
+  </h1>
+</div>
+<h4>Mensagem:</h4>
+<input type="search" placeholder="parte do numero" ng-model="filtro">
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tr>
+      <th>P</th>
+      <th>Q</th>
+      <th>N</th>
+      <th>Z</th>
+      <th>E</th>
+      <th>D</th>
+      <th>(E, N)</th>
+      <th>(D, N)</th>
+      <th class="text-center">Ação</th>
+    </tr>
+  	<!-- <tr ng-repeat=" filter: filtro"> -->
+    <tr>
+      <td><select id="p" class="form-control" ng-model="selectedP" ng-change = "pSelecionado(selected)"ng-options="primo._id as primo.numero for primo in primos"></select></td>
+      <td><select id="q" class="form-control" ng-model="selectedQ" ng-options = "primo._id as primo.numero for primo in primos"></select></td>
+      <td id="n">{{n}}</td>
+      <td id="z">{{z}}</td>
+      <td id="e">{{e}}</td>
+      <td id="d">{{d}}</td>
+      <td id="en">{{en}}</td>
+      <td id="dn">{{dn}}</td>
+      <td class="text-center">
+  			<button
+          ng-click="decifrar()"
+          class="btn btn-warning">
+  				  Decifrar
+  			</buttom>
+  		</td>
+  	</tr>
+<td>
+
+</td>
+  </table>
+
+</div>
+<div>
+  <h4>Mensagem decifrada:</h4>
+</div>
