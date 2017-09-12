@@ -1,7 +1,7 @@
 var express = require('express');
 var load = require('express-load');
 var bodyParser = require('body-parser');
-
+var isCoprime = require('is-coprime');
 module.exports = function() {
   var app = express();
 
