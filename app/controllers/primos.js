@@ -1,4 +1,4 @@
-var ID_CONTATO_INC = 3;
+var ID_CONTATO_INC = 1;
 
 var primos = [
   {_id: 1, numero: 2},
@@ -170,6 +170,10 @@ var primos = [
   {_id: 167, numero: 991},
   {_id: 168, numero: 997}
 ];
+var e = [
+  {_id: 1, numero: 2},
+  {_id: 2, numero: 3}
+];
 
 module.exports = function() {
 
@@ -177,6 +181,9 @@ module.exports = function() {
 
   controller.listaPrimos = function(req, res) {
       res.json(primos);
+  };
+  controller.listaEs = function(req, res) {
+      res.json(e);
   };
 
   controller.obtemPrimo = function(req, res) {

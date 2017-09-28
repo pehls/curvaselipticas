@@ -3,6 +3,9 @@
   Sistema de cálculo de cifragem/decifragemm em RSA
   </h1>
 </div>
+<p ng-show="mensagem.texto">
+    {{mensagem.texto}}
+</p>
 <h4>Mensagem:</h4>
 <input type="text" placeholder="parte da mensagem" ng-model="mensagemCifrada">
 
@@ -11,9 +14,9 @@
     <tr>
       <th>P</th>
       <th>Q</th>
+      <th>E</th>
       <th>N</th>
       <th>Z</th>
-      <th>E</th>
       <th>D</th>
       <th>(E, N)</th>
       <th>(D, N)</th>
@@ -23,10 +26,10 @@
     <tr>
       <td><select id="p" class="form-control" ng-model="selectedP" ng-change = "pSelecionado(selected)"ng-options="primo._id as primo.numero for primo in primos"></select></td>
       <td><select id="q" class="form-control" ng-model="selectedQ" ng-options = "primo._id as primo.numero for primo in primos"></select></td>
+      <td><input type="text" id="e" class="form-control" ng-model="selectedE" ></input></td>
       <td id="n">{{n}}</td>
       <td id="z">{{z}}</td>
-      <td id="e">{{e}}</td>
-      <td id="d">{{d}}</td>
+      <td id="d">{{e}}</td>
       <td id="en">{{en}}</td>
       <td id="dn">{{dn}}</td>
       <td class="text-center">
