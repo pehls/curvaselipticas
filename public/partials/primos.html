@@ -1,43 +1,62 @@
 <div class="jumbotron">
   <h1 class="text-center">
-  Sistema de cálculo de cifragem/decifragemm em RSA
+  Sistema de cálculo de cálculo de curvas elípticas
   </h1>
 </div>
 <p ng-show="mensagem.texto">
     {{mensagem.texto}}
 </p>
-<h4>Mensagem:</h4>
-<input type="text" placeholder="parte da mensagem" ng-model="mensagemCifrada">
 
 <div class="table-responsive">
   <table class="table table-hover">
     <tr>
       <th>P</th>
+      <th>A</th>
+      <th>B</th>
+      <th>Função</th>
+      <th>Grupo</th>
+      <th>P</th>
       <th>Q</th>
-      <th>E</th>
-      <th>N</th>
-      <th>Z</th>
-      <th>D</th>
-      <th>(E, N)</th>
-      <th>(D, N)</th>
-      <th class="text-center">Ação</th>
+      <th>X3</th>
+      <th>Y3</th>
+      <th class="text-center">P+Q</th>
+      <th class="text-center">P-Q</th>
+      <th class="text-center">x</th>
+      <th class="text-center">x*P</th>
     </tr>
   	<!-- <tr ng-repeat=" filter: filtro"> -->
     <tr>
-      <td><select id="p" class="form-control" ng-model="selectedP" ng-change = "pSelecionado(selected)"ng-options="primo._id as primo.numero for primo in primos"></select></td>
-      <td><select id="q" class="form-control" ng-model="selectedQ" ng-options = "primo._id as primo.numero for primo in primos"></select></td>
-      <td><input type="text" id="e" class="form-control" ng-model="selectedE" ></input></td>
-      <td id="n">{{n}}</td>
-      <td id="z">{{z}}</td>
-      <td id="d">{{e}}</td>
-      <td id="en">{{en}}</td>
-      <td id="dn">{{dn}}</td>
+      <td><input type="text" id="p" class="form-control" ng-model="selectedP" ></input></td>
+      <td><input type="text" id="a" class="form-control" ng-model="selectedA" ></input></td>
+      <td><input type="text" id="b" class="form-control" ng-model="selectedB" ></input></td>
+      <td id="funcao">{{funcao}}}</td>
+      <td id="grupo">{{grupo}}</td>
+      </td>
+      <td id="z">{{funcaop}}</td>
+      <td id="d">{{funcaoq}}</td>
+      <td id="en">{{x3}}</td>
+      <td id="dn">{{y3}}</td>
       <td class="text-center">
   			<button
-          ng-click="decifrar()"
+          ng-click="calcular()"
           class="btn btn-warning">
-  				  Decifrar
-  			</buttom>
+  				  Calcular
+  			</button>
+  		</td>
+      <td class="text-center">
+  			<button
+          ng-click="calcularpmenosq()"
+          class="btn btn-warning">
+  				  Calcular
+  			</button>
+  		</td>
+      <td><input type="text" id="x" class="form-control" ng-model="selectedX" ></input></td>
+      <td class="text-center">
+  			<button
+          ng-click="calcularxvezesp()"
+          class="btn btn-warning">
+  				  Calcular
+  			</button>
   		</td>
   	</tr>
 <td>
@@ -47,6 +66,6 @@
 
 </div>
 <div>
-  <h4>Mensagem decifrada:</h4>
+  <h4>{{X}} * {{P}}</h4>
   <h4>{{mensagemDecifrada}}</h4>
 </div>

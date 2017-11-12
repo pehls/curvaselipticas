@@ -2,153 +2,202 @@
 angular.module('auditoriaeseguranca').controller('PrimosController',
 
   function(Primo, $scope) {
-    $scope.primos = [];
-
+    var pontos = [];
+    var intermediario = [];
+    var quadrados = [];
     $scope.filtro = '';
 
-    function buscaPrimos() {
-      Primo.query(
-        function(primos) {
-          $scope.primos = primos;
-          $scope.mensagem = {};
-        },
-        function(erro) {
-          console.log(erro);
-          $scope.mensagem = {
-            texto: 'Não foi possível obter a lista'
-          };
-        }
-      );
-    }
-    buscaPrimos();
-    var Q,P,mensagemC,E,D,N,Z;
+    var P,A,B,GRUPO,FUNCAOP,FUNCAOQ,FUNCAO,X3,Y3, X;
       $scope.$watch('selectedP', function(value) {
-        console.log($scope.primos[value-1].numero);
-        Q=$scope.primos[value-1].numero;
-      });
-      $scope.$watch('selectedQ', function(value) {
-        console.log($scope.primos[value-1].numero);
-        P=$scope.primos[value-1].numero;
-        $scope.z = (P-1)*(Q-1)
-      });
-      $scope.$watch('selectedE', function(value) {
         console.log(value);
-        if (value!=Q && value!=P ) {
-         if (mdc(value,$scope.z) == 1) {
-           $scope.mensagem = {texto: ''};
-           E=value;
-         } else {
-           $scope.mensagem = {texto: 'número E não é co-primo de Z!'}
-         }
-       } else {
-         $scope.mensagem = {texto: 'número E igual a P ou Q!'}
-       }
-
+        P=Number(value);
       });
-      $scope.decifrar = function () {
-        $scope.n = P*Q;
-        N = $scope.n;
-        $scope.z = (P-1)*(Q-1);
-        Z=$scope.z;
-        // $scope.e = coPrimo($scope.z);
-        // E = $scope.e;
-        console.log("\n x=" + coPrimo($scope.z));
-        $scope.d = d();
-        D=$scope.d;
-        $scope.en= "("+E+","+$scope.n+")";
-        $scope.dn= "("+$scope.d+","+$scope.n+")";
-        // var BI2 = int2bigInt(2, 1, 1);
-        // var BI3 = GCD(BI1, BI2);
-        // console.log(BI3);
+      $scope.$watch('selectedA', function(value) {
+        console.log(value);
+        A=Number(value);
+      });
+      $scope.$watch('selectedB', function(value) {
+        console.log(value);
+        B=Number(value);
+      $scope.funcao = "(x³ + "+A+"x + " + B + ")(mod "+P+")";
+      });
+      $scope.$watch('selectedX', function(value) {
+        console.log(value);
+        X=Number(value);
+      });
+      $scope.calcular = function () {
+        encontrarPontos();
+        var crivos = encontrarCrivos();
+        console.log(crivos);
+        //falta calcular, conforme a e b, a formula de acordo com todos os crivos
+        var grupo = encontrarGrupo(crivos);
+        GRUPO = grupo;
+        console.log(grupo);
+        console.log(GRUPO);
+        $scope.grupo = grupo;
+        if (grupo[0]!=undefined) {
+            $scope.funcaop = grupo[0];
+            if (grupo[1]!=undefined) {
+                $scope.funcaoq = grupo[1];
+            } else {
+              $scope.funcaoq = grupo[0];
+            }
+        } else {
+          $scope.funcaoq = undefined;
+          $scope.funcaop = undefined;
+        }
+        if ($scope.funcaop!=$scope.funcaoq) {
+          alfa = pdiferenteDeq($scope.funcaop[0], $scope.funcaop[1], $scope.funcaoq[0], $scope.funcaoq[1]);
+          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+          $scope.x3 = X3;
+          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          $scope.y3 = Y3;
+        }
+        if ($scope.funcaop==$scope.funcaoq) {
+          alfa = pigualq($scope.funcaop[0], A, $scope.funcaoq[0]);
+          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+          $scope.x3 = X3;
+          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          $scope.y3 = Y3;
+        }
+
+        //$scope.mensagem.texto = "Calculando com "+grupo[0] + " e "+ grupo[1];
       };
-      function d() {
-        for (i=1; i<1000; ++i) {
-          if(mod(((i*$scope.z)+1),E)==0) {
-            return (i*$scope.z+1)/E;
+      $scope.calcularpmenosq = function () {
+        encontrarPontos();
+        var crivos = encontrarCrivos();
+        console.log(crivos);
+        //falta calcular, conforme a e b, a formula de acordo com todos os crivos
+        var grupo = encontrarGrupo(crivos);
+        GRUPO = grupo;
+        console.log(grupo);
+        console.log(GRUPO);
+        $scope.grupo = grupo;
+        if (grupo[0]!=undefined) {
+            $scope.funcaop = grupo[0];
+            if (grupo[1]!=undefined) {
+              grupo[1][1] = P - grupo[1][1];
+                $scope.funcaoq = grupo[1];
+            } else {
+              $scope.funcaoq = grupo[0];
+            }
+        } else {
+          $scope.funcaoq = undefined;
+          $scope.funcaop = undefined;
+        }
+        if ($scope.funcaop!=$scope.funcaoq) {
+          alfa = pdiferenteDeq($scope.funcaop[0], $scope.funcaop[1], $scope.funcaoq[0], $scope.funcaoq[1]);
+          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+          $scope.x3 = X3;
+          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          $scope.y3 = Y3;
+        }
+        if ($scope.funcaop==$scope.funcaoq) {
+          alfa = pigualq($scope.funcaop[0], A, $scope.funcaoq[0]);
+          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+          $scope.x3 = X3;
+          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          $scope.y3 = Y3;
+        }
+
+      };
+      $scope.calcularxvezesp = function () {
+        var doisp = [];
+        var n = X/2;
+        var x1 = $scope.funcaop[0];
+        var y1 = $scope.funcaop[1]
+        alfa = pigualq(x1, x1, x1);
+        X3 = x3igual(alfa, x1, x1);
+        doisp[0] = X3;
+        Y3 = y3igual(alfa, x1, X3, y1);
+        doisp[1] = Y3;
+        n = n - 1;
+        while (n>0) {
+          if (doisp[0]!=x1 || doisp[1]!=y1) {
+            alfa = pdiferenteDeq(doisp[0], doisp[1], x1, y1);
+            x1 = x3igual(alfa, doisp[0], doisp[1]);
+            y1 = y3igual(alfa, doisp[0], X3, x1);
+
+          } else
+          if (doisp[0]==x1 && doisp[1]==y1) {
+            alfa = pigualq(doisp[0], A, doisp[0]);
+            x1 = x3igual(alfa,doisp[0], x1);
+            y1 = y3igual(alfa, doisp[0], X3, doisp[0]);
           }
+          n = n - 1;
+        }
+
+        $scope.mensagemDecifrada = "["+x1+","+y1+"] em função de P"
+      };
+      function encontrarGrupo(crivos) {
+        var grupo = [];
+        var i = 0;
+        for (j = 0; j< crivos.length; ++j) {
+          n = mod(formulaGrupo(crivos[j]), P);
+          if (n%Math.trunc(n) >= 1 || n%Math.trunc(n) === 0) {
+            grupo[i] = [crivos[j], n]
+            i = i+1;
+            n = normalize(mod(-1*formulaGrupo(crivos[j]), P));
+            if (n%Math.trunc(n) >= 1 || n%Math.trunc(n) === 0) {
+              grupo[i] = [crivos[j], n]
+              i = i+1;
+            }
+          }
+        }
+        return grupo;
+      }
+      function formulaGrupo(x) {
+        return Math.sqrt((x*x*x)+A*x+B);
+      }
+      function encontrarCrivos() {
+        var crivos = [];
+        var indice = 0;
+        for (i = 0; i< quadrados.length; ++i) {
+          for (j = 0; j< intermediario.length; ++j) {
+            for (k = 0; k< pontos.length; k++) {
+              if ((pontos[k] + intermediario[j]) == quadrados[i]) {
+                if (crivos.indexOf(pontos[k])==-1) {
+                  crivos[indice] = pontos[k];
+                  indice = indice + 1;
+                }
+              }
+            }
+
+          }
+        }
+        return crivos;
+      }
+      function encontrarPontos() {
+        var j = 1;
+        for (i = 0; i<P; ++i) {
+          pontos[i] = i;
+          intermediario[i] = (j * P);
+          quadrados[i] = Math.pow((j),2);
+          j = j + 1;
         }
       }
-      /**
-      *método está errado
-      */
-      function coPrimo(x) {
-          for (i=1; i<$scope.primos.length; ++i) {
-            console.log("MDC = "+mdc($scope.primos[i].numero,x) + "\n + primo = " + $scope.primos[i].numero + "\n x= " + x);
-             if ($scope.primos[i].numero!=Q && $scope.primos[i]!=P ) {
-              if (mdc($scope.primos[i].numero,x) == 1) {
-                return $scope.primos[i].numero;
-              }
-             }
-          }
-      };
-      function mdc (a,b) {
-        if(b === 0 ) return a;
-        return mdc(b, a%b);
-      };
-      function primo(numero) {
-         var status = true;
-         for (possivelDivisor = 2; possivelDivisor <= Math.floor(numero / 2); possivelDivisor++) {
-           if (numero % possivelDivisor == 0) {  // possível divisor >> divisor
-             status = false;
-             break;
-           }
-         }
-         return status;
-       }
+
+      function pdiferenteDeq(x1,x2,y1,y2) {
+        return (y2-y1)/(x2-x1);
+      }
+      function pigualq(x1,a,y1) {
+        return ((3*Math.pow(x1,2))+a)/(2*y1);
+      }
+      function x3igual (alfa, x1, x2) {
+        return mod(normalize(Math.pow(alfa,2) - x1 - x2), P);
+      }
+      function y3igual (alfa,x1,x3,y1) {
+        return mod(normalize(alfa*(x1-x3)-y1), P);
+      }
+    function normalize (n) {
+      while (n < 0) {
+        n = n + P;
+      }
+      return n;
+    }
+
       function mod(x,y) {
         return x%y;
       };
-      function toBinaryArray(x) {
-        var string =  parseInt( x, 10 ).toString( 2 );
-        var i = 0;
-        var frase = new Array();
 
-        for ( i=0; i < string.length ; i++ )
-	         frase[i] = string.charAt(i);
-        return frase.reverse();
-      }
-      function encontrarUns(x) {
-        var uns = new Array();
-        var j=0;
-        for(i=0; i<x.length; i++) {
-	          if(x[i]==1) {
-		            uns[j] = i;
-		              j++;
-                }
-              }
-              return uns;
-        }
-        function aplicarFormula (uns, value) {
-           var result=1;
-           if (uns!= NaN)
-           for (i=0; i<uns.length; i++) {
-             var temp = value;
-             if (uns[i]!=0) {
-             for (j=0; j<uns[i]; j++) {
-               temp = Math.pow(temp,2) % N;
-             }
-           }
-           uns[i] = temp;
-         }
-          var i = 0;
-          var temp = 1;
-          while (i<uns.length) {
-                 temp = temp * uns[i];
-                 i++;
-          }
-          return temp%N;
-        }
-        function decifrar (y) {
-            return aplicarFormula(encontrarUns(toBinaryArray(D)), y);
-        }
-        function cifrar (y) {
-            return aplicarFormula(encontrarUns(toBinaryArray(E)), y);
-        }
-      $scope.$watch('mensagemCifrada', function(value) {
-
-      // console.log("\nC = "+bigInt(mensagemC).modPow(d , n));
-      // console.log(bigInt(mensagemC).modPow($scope.d,$scope.n));
-      console.log(decifrar(value));
-      $scope.mensagemDecifrada = decifrar(value);
-      });
 });
