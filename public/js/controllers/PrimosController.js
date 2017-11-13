@@ -7,7 +7,7 @@ angular.module('auditoriaeseguranca').controller('PrimosController',
     var quadrados = [];
     $scope.filtro = '';
 
-    var P,A,B,GRUPO,FUNCAOP,FUNCAOQ,FUNCAO,X3,Y3, X;
+    var P,A,B,GRUPO,FUNCAOP1, FUNCAOP2,FUNCAOQ1, FUNCAOQ2,FUNCAO,X3,Y3, X;
       $scope.$watch('selectedP', function(value) {
         console.log(value);
         P=Number(value);
@@ -25,6 +25,22 @@ angular.module('auditoriaeseguranca').controller('PrimosController',
         console.log(value);
         X=Number(value);
       });
+      $scope.$watch('selectedP1', function(value) {
+        console.log(value);
+        FUNCAOP1=Number(value);
+      });
+      $scope.$watch('selectedP2', function(value) {
+        console.log(value);
+        FUNCAOP2=Number(value);
+      });
+      $scope.$watch('selectedQ1', function(value) {
+        console.log(value);
+        FUNCAOQ1=Number(value);
+      });
+      $scope.$watch('selectedQ2', function(value) {
+        console.log(value);
+        FUNCAOQ2=Number(value);
+      });
       $scope.calcular = function () {
         encontrarPontos();
         var crivos = encontrarCrivos();
@@ -34,30 +50,20 @@ angular.module('auditoriaeseguranca').controller('PrimosController',
         GRUPO = grupo;
         console.log(grupo);
         console.log(GRUPO);
-        $scope.grupo = grupo;
-        if (grupo[0]!=undefined) {
-            $scope.funcaop = grupo[0];
-            if (grupo[1]!=undefined) {
-                $scope.funcaoq = grupo[1];
-            } else {
-              $scope.funcaoq = grupo[0];
-            }
-        } else {
-          $scope.funcaoq = undefined;
-          $scope.funcaop = undefined;
-        }
-        if ($scope.funcaop!=$scope.funcaoq) {
-          alfa = pdiferenteDeq($scope.funcaop[0], $scope.funcaop[1], $scope.funcaoq[0], $scope.funcaoq[1]);
-          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+        $scope.grupo =  grupo;
+        $scope.mensagemDecifrada = "Ponto de infinitude não está no grupo!";
+        if (FUNCAOP1!=FUNCAOQ1 || FUNCAOP2!=FUNCAOQ2) {
+          alfa = pdiferenteDeq(FUNCAOP1, FUNCAOP2, FUNCAOQ1, FUNCAOQ2);
+          X3 = x3igual(alfa, FUNCAOP1, FUNCAOQ1);
           $scope.x3 = X3;
-          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          Y3 = y3igual(alfa, FUNCAOP1, X3, FUNCAOP2);
           $scope.y3 = Y3;
         }
-        if ($scope.funcaop==$scope.funcaoq) {
-          alfa = pigualq($scope.funcaop[0], A, $scope.funcaoq[0]);
-          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+        if (FUNCAOP1==FUNCAOQ1 && FUNCAOP2==FUNCAOQ2) {
+          alfa = pigualq(FUNCAOP1, A, FUNCAOP2);
+          X3 = x3igual(alfa, FUNCAOP1, FUNCAOP1);
           $scope.x3 = X3;
-          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          Y3 = y3igual(alfa, FUNCAOP1, X3, FUNCAOP2);
           $scope.y3 = Y3;
         }
 
@@ -73,61 +79,44 @@ angular.module('auditoriaeseguranca').controller('PrimosController',
         console.log(grupo);
         console.log(GRUPO);
         $scope.grupo = grupo;
-        if (grupo[0]!=undefined) {
-            $scope.funcaop = grupo[0];
-            if (grupo[1]!=undefined) {
-              grupo[1][1] = P - grupo[1][1];
-                $scope.funcaoq = grupo[1];
-            } else {
-              $scope.funcaoq = grupo[0];
-            }
-        } else {
-          $scope.funcaoq = undefined;
-          $scope.funcaop = undefined;
-        }
-        if ($scope.funcaop!=$scope.funcaoq) {
-          alfa = pdiferenteDeq($scope.funcaop[0], $scope.funcaop[1], $scope.funcaoq[0], $scope.funcaoq[1]);
-          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+        FUNCAOQ2 = P - FUNCAOQ2;
+        if (FUNCAOP1!=FUNCAOQ1 || FUNCAOP2!=FUNCAOQ2) {
+          alfa = pdiferenteDeq(FUNCAOP1, FUNCAOP2, FUNCAOQ1, FUNCAOQ2);
+          X3 = x3igual(alfa, FUNCAOP1, FUNCAOQ1);
           $scope.x3 = X3;
-          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          Y3 = y3igual(alfa, FUNCAOP1, X3, FUNCAOQ1);
           $scope.y3 = Y3;
         }
-        if ($scope.funcaop==$scope.funcaoq) {
-          alfa = pigualq($scope.funcaop[0], A, $scope.funcaoq[0]);
-          X3 = x3igual(alfa, $scope.funcaop[0], $scope.funcaop[1]);
+        if (FUNCAOP1==FUNCAOQ1 && FUNCAOP2==FUNCAOQ2) {
+          alfa = pigualq(FUNCAOP1, A, FUNCAOP2);
+          X3 = x3igual(alfa, FUNCAOP1, FUNCAOP1);
           $scope.x3 = X3;
-          Y3 = y3igual(alfa, $scope.funcaop[0], X3, $scope.funcaoq[0]);
+          Y3 = y3igual(alfa, FUNCAOP1, X3, FUNCAOP2);
           $scope.y3 = Y3;
         }
+
 
       };
       $scope.calcularxvezesp = function () {
         var doisp = [];
+        var respx, respy;
         var n = X/2;
-        var x1 = $scope.funcaop[0];
-        var y1 = $scope.funcaop[1]
-        alfa = pigualq(x1, x1, x1);
-        X3 = x3igual(alfa, x1, x1);
-        doisp[0] = X3;
-        Y3 = y3igual(alfa, x1, X3, y1);
-        doisp[1] = Y3;
+        alfa = pigualq(FUNCAOP1, A, FUNCAOP2);
+        var x1 = x3igual(alfa, FUNCAOP1, FUNCAOP1);
+        doisp[0] = x1;
+        var y1 = y3igual(alfa, FUNCAOP1, X3, FUNCAOP2);
+        doisp[1] = y1;
         n = n - 1;
-        while (n>0) {
-          if (doisp[0]!=x1 || doisp[1]!=y1) {
-            alfa = pdiferenteDeq(doisp[0], doisp[1], x1, y1);
-            x1 = x3igual(alfa, doisp[0], doisp[1]);
-            y1 = y3igual(alfa, doisp[0], X3, x1);
-
-          } else
-          if (doisp[0]==x1 && doisp[1]==y1) {
-            alfa = pigualq(doisp[0], A, doisp[0]);
-            x1 = x3igual(alfa,doisp[0], x1);
-            y1 = y3igual(alfa, doisp[0], X3, doisp[0]);
-          }
+        while (n > 0) {
+          alfa = pigualq(x1, A, y1);
+          var x32 = x3igual(alfa, x1, doisp[0]);
+          y1 = y3igual(alfa, x1, x32, y1);
+          x1 = x32;
           n = n - 1;
         }
 
-        $scope.mensagemDecifrada = "["+x1+","+y1+"] em função de P"
+
+        $scope.mensagemDecifrada = "["+x1+","+y1+"] em função de P " + FUNCAOP1 + ","+ FUNCAOP2;
       };
       function encontrarGrupo(crivos) {
         var grupo = [];
@@ -177,18 +166,23 @@ angular.module('auditoriaeseguranca').controller('PrimosController',
         }
       }
 
-      function pdiferenteDeq(x1,x2,y1,y2) {
+      function pdiferenteDeq(x1,y1,x2,y2) {
         return (y2-y1)/(x2-x1);
       }
       function pigualq(x1,a,y1) {
         return ((3*Math.pow(x1,2))+a)/(2*y1);
       }
       function x3igual (alfa, x1, x2) {
-        return mod(normalize(Math.pow(alfa,2) - x1 - x2), P);
+        console.log(Math.pow(alfa,2) - x1 - x2);
+        var n = normalize(Math.pow(alfa,2) - x1 - x2);
+        var resp = (n % P);
+        return resp;
       }
       function y3igual (alfa,x1,x3,y1) {
         return mod(normalize(alfa*(x1-x3)-y1), P);
       }
+
+
     function normalize (n) {
       while (n < 0) {
         n = n + P;

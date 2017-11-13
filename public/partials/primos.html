@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <h1 class="text-center">
-  Sistema de cálculo de cálculo de curvas elípticas
+  Sistema de cálculo de curvas elípticas, por Gabriel Pehls
   </h1>
 </div>
 <p ng-show="mensagem.texto">
@@ -15,8 +15,10 @@
       <th>B</th>
       <th>Função</th>
       <th>Grupo</th>
-      <th>P</th>
-      <th>Q</th>
+      <th>P1</th>
+      <th>P2</th>
+      <th>Q1</th>
+      <th>Q2</th>
       <th>X3</th>
       <th>Y3</th>
       <th class="text-center">P+Q</th>
@@ -32,8 +34,10 @@
       <td id="funcao">{{funcao}}}</td>
       <td id="grupo">{{grupo}}</td>
       </td>
-      <td id="z">{{funcaop}}</td>
-      <td id="d">{{funcaoq}}</td>
+      <td ><input type="text" id="p" class="form-control" ng-model="selectedP1" ></input></td>
+      <td ><input type="text" id="p" class="form-control" ng-model="selectedP2" ></input></td>
+      <td ><input type="text" id="p" class="form-control" ng-model="selectedQ1" ></input></td>
+      <td ><input type="text" id="p" class="form-control" ng-model="selectedQ2" ></input></td>
       <td id="en">{{x3}}</td>
       <td id="dn">{{y3}}</td>
       <td class="text-center">
